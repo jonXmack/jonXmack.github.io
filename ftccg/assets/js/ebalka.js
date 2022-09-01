@@ -677,10 +677,23 @@ function hookInputValidators() {
 } // function hookInputValidators()
 
 hookInputValidators();
-document.getElementById("btn-dotable").addEventListener("click", goTrajTable);
+
+document.getElementById("s-btn-dotable").addEventListener("click", goTrajTable);
+
+document.querySelectorAll("#s-btn-dotable").forEach(el => {
+	el.addEventListener("click", goTrajTable);
+});
+
+document.querySelectorAll("#s-btn-doprint").forEach(el => {
+	el.addEventListener("click", function() {
+		window.print()
+	});
+});
+
 document.querySelectorAll("input").forEach(function (el) {
 	el.addEventListener("change", goTrajTable);
 });
+
 document.querySelectorAll("select").forEach(function (el) {
 	el.addEventListener("change", goTrajTable);
 });

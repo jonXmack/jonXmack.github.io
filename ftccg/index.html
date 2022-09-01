@@ -17,6 +17,12 @@
             display: flex;
         }
 
+        .btn-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
         label,
         input,
         select {
@@ -83,10 +89,20 @@
 
         .btn-label {
             cursor: pointer;
-            padding: 5px;
+            padding: 5px 10px;
             display: inline-block;
             border: 1px solid #000;
-            margin: 0 auto 25px;
+            background: #000;
+            color: #fff;
+            margin: 0 0 25px;
+            transition: all .5s;
+            font-size: 14px;
+        }
+
+        .btn-label:hover {
+            transition: all .5s;
+            background: #fff;
+            color: #000;
         }
 
         .outputArea {
@@ -183,6 +199,7 @@
             <div id="w-main">
                 <h1>Field Target Click Chart Generator</h1>
                 <p>A heavily modified version of <a href="https://ptosis.ch/ebalka/ebalka.html" target="_blank">Yet Another External Ballistic Kalculator</a> by Alexandre Trofimov.</p>
+                <p><a onclick="window.print();" href="#!">Printing the page</a> will only print the charts</p>
                 <div class="group">
                     <div class="inner">
                         <label for="gearSightHeight" id="s-sightheight">Sight height, mm</label>
@@ -421,15 +438,34 @@
                 <div class="group">
                     <div class="btn-container" id="btn-dotable">
                         <div class="btn-label" id="s-btn-dotable">Calculate</div>
+                        <div class="btn-label" id="s-btn-doprint">Print Charts</div>
                     </div>
                 </div>
                 <div id="output">
                     <h4>Chart Option 1</h4>
                     <div class="outputArea outputTable outputTable--landscape" id="outputChart1" style="clear: both;"></div>
+                    <div class="group">
+                        <div class="btn-container" id="btn-dotable">
+                            <div class="btn-label" id="s-btn-dotable">Calculate</div>
+                            <div class="btn-label" id="s-btn-doprint">Print Charts</div>
+                        </div>
+                    </div>
                     <h4>Chart Option 2</h4>
                     <div class="outputArea outputTable outputTable--portrait" id="outputChart2" style="clear: both;"></div>
+                    <div class="group">
+                        <div class="btn-container" id="btn-dotable">
+                            <div class="btn-label" id="s-btn-dotable">Calculate</div>
+                            <div class="btn-label" id="s-btn-doprint">Print Charts</div>
+                        </div>
+                    </div>
                     <h4>Raw Data</h4>
                     <div class="outputArea" id="outputBlock" style="clear: both;"></div>
+                </div>
+                <div class="group">
+                    <div class="btn-container" id="btn-dotable">
+                        <div class="btn-label" id="s-btn-dotable">Calculate</div>
+                        <div class="btn-label" id="s-btn-doprint">Print Charts</div>
+                    </div>
                 </div>
             </div>
         </div>
