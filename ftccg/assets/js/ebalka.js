@@ -690,14 +690,49 @@ document.querySelectorAll("#s-btn-doprint").forEach(el => {
 	});
 });
 
-document.querySelectorAll("input").forEach(function (el) {
-	el.addEventListener("change", goTrajTable);
-});
+function saveElementData(el) {
+	// get element ID and value
+	var elId = el.getAttribute('id');
+	var elVal = el.value;
+	// create localStorage item
+	localStorage.setItem(elId, elVal);
+}
 
-document.querySelectorAll("select").forEach(function (el) {
-	el.addEventListener("change", goTrajTable);
+function setElementData() {
+	// Loop through local storage keys
+	Object.keys(localStorage).forEach(function(key){
+		// get the id and value
+		var elId = key;
+		var elVal = localStorage.getItem(elId);
+		// find the element
+		var el = document.querySelector('#' + elId);
+		// if it exists set the value
+		el ? el.value = elVal : null;
+	});
+}
+
+
+document.querySelectorAll("input, select").forEach(function (el) {
+	el.addEventListener("change", function(){
+		// if dataSaved doesn't exist, set it
+		!localStorage.getItem('dataSaved') ? localStorage.setItem('dataSaved', true) : null;
+		// create the table
+		goTrajTable();
+		// save the data
+		saveElementData(this);
+	});
 });
 
 window.addEventListener("load", function () {
+	// if the item exists set the data
+	if (localStorage.getItem('dataSaved')) {
+		setElementData()
+	} else {
+		document.querySelectorAll("input, select").forEach(function (el) {
+			// save the data from each element
+			saveElementData(el);
+		});
+	}
+	// create the table
 	goTrajTable();
 });
