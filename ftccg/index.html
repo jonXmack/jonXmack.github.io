@@ -287,7 +287,11 @@
                         </div>
                         <div class="inner">
                             <label for="tgtRangeStep" id="s-tgtrangestep">Range step, yards</label>
-                            <input type="number" id="tgtRangeStep" min="1" max="10" value="1" step="1" disabled>
+                            <select name="tgtRangeStep" id="tgtRangeStep">
+                                <option value="1">1</option>
+                                <option value="3">3</option>
+                                <option value="5">5</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -316,7 +320,7 @@
                                     <select name="tgtDragProfile" id="tgtDragProfile">
                                         <option value="GAChairGun">GA - ChairGun</option>
                                         <option value="GAGtA">GA - Gateway To Airguns</option>
-                                        <option value="GADIY">GA - ChairGun Custom Profile</option>
+                                        <option value="GACustom">GA - ChairGun Custom Profile</option>
                                         <option value="G1ChairGun">G1 - ChairGun</option>
                                         <option value="G1">G1 - Standard</option>
                                     </select>

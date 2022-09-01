@@ -48,7 +48,7 @@ var GAGtA = {
 	],
 }
 
-var GADIY = {
+var GACustom = {
 	name: "GA - from ChairGun data, CustomProfile.pro",
 	mass: 0.4535924,
 	cal: 0.0254,
@@ -212,30 +212,45 @@ var G1ChairGun = {
 
 
 function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
-	// get click values in radians
-	var clickV = document.getElementById("gearClickV").value;
-	var clickH = document.getElementById("gearClickH").value;
-	var clickInteger = 1 / clickV;
+	// Set click unit
+	var clickUnit = "moa"
+	// Get click values in radians
+	var clickYValue = document.getElementById("gearClickV").value;
+	var clickXValue = document.getElementById("gearClickH").value;
+	// Convert radians to clickUnit
+	var clickY = UC.from(clickYValue, "moa");
+	var clickX = UC.from(clickXValue, "moa");
+
+	// Convert radians to fractional value
+	var clickInteger = 1 / clickYValue;
+	// Get wind speed
 	var windSpeed = document.getElementById("tgtWindSpeed").value;
+	// Get wind direction
 	var windDir = document.getElementById("tgtWindDir").value;
+	// If wind speed is set and wind direction isn't straight ahead then display windage columns
 	var displayWindage = windSpeed > 0 && windDir != 0 ? true : false;
 
+	// Get rifle name
 	var rifleName = document.getElementById("rifleName").value;
+	// Get scope name
 	var scopeName = document.getElementById("scopeName").value;
+	// Get zero distance
 	var zeroDistance = document.getElementById("shotZero").value;
+	// Get BC value
 	var bcValue = document.getElementById("gearbc").value;
+	// Get drag profile
 	var dragProfile = document.getElementById("tgtDragProfile").value;
 
+	// Build the chart header from the rifle and scope
 	var chartHeaderVal = rifleName + " / " + scopeName;
+	// Build the chart footer from the zero distance, BC and drag profile
 	var chartFooterVal = "Zero: " + zeroDistance + " yards / BC: " + bcValue + " / Drag Profile: " + dragProfile;
 
-	clickV = UC.from(clickV, "moa");
-	clickH = UC.from(clickH, "moa");
-
+	// Get output areas
 	var outputBlock = document.getElementById("outputBlock");
 	var outputChart1 = document.getElementById("outputChart1");
 	var outputChart2 = document.getElementById("outputChart2");
-	// erase whatever was in the output bin
+	// Erase whatever was in the output areas
 	while (outputBlock.hasChildNodes()) {
 		outputBlock.removeChild(outputBlock.lastChild);
 	}
@@ -248,10 +263,11 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 		outputChart2.removeChild(outputChart2.lastChild);
 	}
 
+	// Setup table variables
 	var simpleBlockTable;
 	var simpleblockRow;
 	var blockCell;
-
+	// Setup chart variables
 	var chart1Table;
 	var chart1Row;
 	var chart1Cell;
@@ -260,6 +276,7 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 	var chart2Row;
 	var chart2Cell;
 
+	// Create table, rows, and cells
 	simpleBlockTable = document.createElement("table");
 	simpleblockRow = document.createElement("tr");
 
@@ -312,7 +329,7 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 	simpleblockRow.appendChild(blockCell);
 
 	blockCell = document.createElement("th");
-	blockCell.innerHTML = "Drop, moa";
+	blockCell.innerHTML = "Drop, mm";
 	simpleblockRow.appendChild(blockCell);
 
 	blockCell = document.createElement("th");
@@ -325,7 +342,7 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 
 	if (displayWindage) {
 		blockCell = document.createElement("th");
-		blockCell.innerHTML = "Windage, moa";
+		blockCell.innerHTML = "Windage, mm";
 		simpleblockRow.appendChild(blockCell);
 	
 		blockCell = document.createElement("th");
@@ -339,6 +356,7 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 
 	simpleBlockTable.appendChild(simpleblockRow);
 
+	// Set headings on chart columns
 	var chartRangeHeading = "Yards";
 	var chartClicksHeading = "Clicks";
 
@@ -378,68 +396,141 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 
 	chart2Table.appendChild(chart2Row);
 
-	var minDistanceYards = minDistance / 3;
-
+	// minDistance is given to us in feet
+	var minDistanceYards = UC.to(minDistance, "yard");
+	// Get clicks per revolution value
 	var clicksPerRev = parseInt(document.querySelector("#gearClicksRev").value);
+	// Set maximum clicks to 1 click under a full revolution
 	var maxClicks = clicksPerRev - 1;
+	// Get separator text
 	var separator = document.querySelector("#separator").value;
+	// Get reminder text
 	var reminder = document.querySelector("#reminder").value;
+	// Check if Turret Divisions or Total Clicks is set
 	var chartTurret = document.querySelector("#chartTurret").checked;
 	var chartClicks = document.querySelector("#chartClicks").checked;
-	
-	var minRange = document.getElementById("tgtRangeMin").value;
-	var maxRange = document.getElementById("tgtRangeMax").value;
+	// Get min and max ranges
+	var minRange = parseInt(document.getElementById("tgtRangeMin").value);
+	var maxRange = parseInt(document.getElementById("tgtRangeMax").value);
+	var rangeStep = parseInt(document.getElementById("tgtRangeStep").value);
 
+	// Used to build the charts
 	var dataArr = [];
 
+	// Useful to have for troubleshooting/inspecting
 	console.log(traj);
 
-	for (let i = minDistanceYards; i < traj.length; i++) {
+	// Work out where in the traj data we need to start
+	var trajStep = minDistanceYards / rangeStep;
+
+	for (let i = 0; i < traj.length; i++) {
+		// Allows us to change the range unit across a few different places
+		var rangeUnit = "yard"
+		// Array of ranges/clicks used to build charts
 		var rangeArr = [];
-		var Range = UC.to(traj[i].range, "yard");
+
+		// Range is originally given to us in feet
+		var RangeFeet = traj[i].range;
+		// Range converted to rangeUnit
+		var Range = UC.to(RangeFeet, rangeUnit);
+		// Time in seconds
 		var Time = UC.toStr(traj[i].time, "s");
+		// Velocity in fps
 		var Velocity = UC.toStr(traj[i].velocity, "fps");
+		// Mach
 		var Mach = traj[i].mach.toFixed(3);
-		var Drop = UC.to(traj[i].drop, "yard");
-		var Windage = UC.to(traj[i].windage, "m");
-		var dropMrad = Math.round(Range) ? UC.to(Drop / Range, "mrad").toFixed(2) : "---";
+		// Drop in feet
+		var DropFeet = traj[i].drop;
+		// Drop converted to rangeUnit - used to calculate mrad/moa drop
+		var DropRangeUnit = UC.to(DropFeet, rangeUnit);
+		// Windage in rangeUnit
+		var Windage = UC.to(traj[i].windage, rangeUnit);
+		// Drop/Windage in mrad
+		var dropMrad = Math.round(Range) ? UC.to(DropRangeUnit / Range, "mrad").toFixed(2) : "---";
 		var windageMrad = Math.round(Range) ? UC.to(Windage / Range, "mrad").toFixed(2) : "---";
-		var dropMoa = Math.round(Range) ? UC.to(Drop / Range, "moa").toFixed(2) : "---";
+		// Drop/Windage in moa
+		var dropMoa = Math.round(Range) ? UC.to(DropRangeUnit / Range, "moa").toFixed(2) : "---";
 		var windageMoa = Math.round(Range) ? UC.to(Windage / Range, "moa").toFixed(2) : "---";
-		var clicksY = Math.round(Range) ? (-Drop / (Range * clickV)).toFixed(0) : "---";
+		// Drop in mm
+		var dropMm = UC.to(DropFeet, "mm").toFixed(2);
+		// Difference in drop between current distance and next distance
+		var dropDifference = traj[i+1] ? UC.to((traj[i].drop - traj[i+1].drop), "mm").toFixed(2) : "---";
+		// Windage in mm
+		var windageMm = UC.to(DropFeet, "mm").toFixed(2);
+		// Elevation clicks
+		var clicksY = Math.round(Range) ? (-DropRangeUnit / (Range * clickY)).toFixed(0) : "---";
+		// Logic for displaying elevation clicks. If negative clicks add a '-' before the first number and switch some of the numbers.
 		var clicksYDisplay = clicksY >= 0 ? Math.floor(clicksY / clickInteger).toString() + separator + Math.floor(clicksY % clickInteger).toString() : "-" + Math.floor((clicksPerRev - Math.abs(clicksY)) / clickInteger).toString() + separator + Math.floor((clicksPerRev - Math.abs(clicksY)) % clickInteger).toString();
-		var clicksX = Math.round(Range) ? (Windage / (Range * clickH)).toFixed(0) : "---";
+		// Windage clicks
+		var clicksX = Math.round(Range) ? (Windage / (Range * clickX)).toFixed(0) : "---";
+		// Logic for displaying windage clicks. If negative clicks add a '-' before the first number and switch some of the numbers.
 		var clicksXDisplay = clicksY >= 0 ? Math.floor(clicksX / clickInteger).toString() + separator + Math.floor(clicksX % clickInteger).toString() : "-" + Math.floor((clicksPerRev - Math.abs(clicksX)) / clickInteger).toString() + separator + Math.floor((clicksPerRev - Math.abs(clicksX)) % clickInteger).toString();
 
+		// Elevation clicks. If clicks on turret are greater than one rotation display the reminder instead
 		var turretY = clicksY > maxClicks ? Math.floor(maxClicks / clickInteger) + separator + Math.floor(maxClicks % clickInteger) + " " + reminder : clicksYDisplay;
+		// Windage clicks. If clicks on turret are greater than one rotation display the reminder instead
 		var turretX = clicksX > maxClicks ? Math.floor(maxClicks / clickInteger) + separator + Math.floor(maxClicks % clickInteger) + " " + reminder : clicksXDisplay;
 
-		simpleblockRow = displayWindage ? makeTableRow("", Range.toFixed(0), Time, Velocity, dropMoa, clicksY, turretY, windageMoa, clicksX, turretX) : makeTableRow("", Range.toFixed(0), Time, Velocity, dropMoa, clicksY, turretY);
-		simpleBlockTable.appendChild(simpleblockRow);
+		// Builds row. If horizontal movement is calculated it'll display extra columns, else it'll just display vertical clicks.
+		simpleblockRow = displayWindage ? makeTableRow("", Range.toFixed(0), Time, Velocity, dropMm, clicksY, turretY, windageMm, clicksX, turretX) : makeTableRow("", Range.toFixed(0), Time, Velocity, dropMm, clicksY, turretY);
 
-		rangeArr.push(Range);
-		chartTurret ? rangeArr.push(turretY) : rangeArr.push(clicksY);
-
-		dataArr.push(rangeArr);
+		// Only add data if it's over the minimum distance
+		if (Range >= minDistanceYards) {
+			// Add each row to the table
+			simpleBlockTable.appendChild(simpleblockRow);
+			// Push the range to the range array
+			rangeArr.push(Range);
+			// Push either the turret divisions or the clicks to the range array
+			chartTurret ? rangeArr.push(turretY) : rangeArr.push(clicksY);
+			// Push the range array to the data array used for building charts
+			dataArr.push(rangeArr);
+		}
 	}
 
+	// Setting up arrays for chart
 	var chart1RangeDone = [];
 	var chart1Arr = [];
+	// Setting up columns for chart
+	// We have to go negative if we need blank cells at the top of the column
+	// We always minus our starting range
 	var chart1Col1Start = 0 - 2;
-	var chart1Col2Start = 14;
-	var chart1Col3Start = 30;
+	var chart1Col2Start = 24 - minRange;
+	var chart1Col3Start = 40 - minRange;
+	if (rangeStep == 3) {
+		chart1Col1Start = 0 - 6;
+		chart1Col2Start = 22 - minRange;
+		chart1Col3Start = 40 - minRange;
+	} else if (rangeStep == 5) {
+		chart1Col1Start = 0 - minRange;
+		chart1Col2Start = 20 - minRange;
+		chart1Col3Start = 40 - minRange;
+	}
 
+	// Setting up arrays for chart
 	var chart2RangeDone = [];
 	var chart2Arr = [];
+	// Setting up columns for chart
+	// We have to go negative if we need blank cells at the top of the column
+	// We always minus our starting range
 	var chart2Col1Start = 0;
-	var chart2Col2Start = 23;
+	var chart2Col2Start = 33 - minRange;
+	if (rangeStep == 3) {
+		chart2Col1Start = 0;
+		chart2Col2Start = 34 - minRange;
+	} else if (rangeStep == 5) {
+		chart2Col1Start = 0;
+		chart2Col2Start = 35 - minRange;
+	}
 
 	dataArr.forEach((e, i) => {
+		// Getting information from the data passed
 		var range = e[0];
 		var clicks = e[1];
+		// Empty arrays for building chart rows
 		var chart1Row = [];
 		var chart2Row = [];
 
+		// Build each column based on data
 		var chart1Col1range = dataArr[chart1Col1Start] ? dataArr[chart1Col1Start][0] : "";
 		var chart1Col1clicks = dataArr[chart1Col1Start] ? dataArr[chart1Col1Start][1] : "";
 		var chart1Col2range = dataArr[chart1Col2Start] ? dataArr[chart1Col2Start][0] : "";
@@ -452,7 +543,9 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 		var chart2Col2range = dataArr[chart2Col2Start] ? dataArr[chart2Col2Start][0] : "";
 		var chart2Col2clicks = dataArr[chart2Col2Start] ? dataArr[chart2Col2Start][1] : "";
 
-		if (!chart1RangeDone.includes(range)) {
+		// Don't continue if the array includes the maximum range
+		if (!chart1RangeDone.includes(maxRange)) {
+			// Push all the information to the row/cells
 			chart1Row.push(chart1Col1range);
 			chart1Row.push(chart1Col1clicks);
 			chart1Row.push(chart1Col2range);
@@ -460,45 +553,58 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 			chart1Row.push(chart1Col3range);
 			chart1Row.push(chart1Col3clicks);
 
-			chart1Col1Start = chart1Col1Start + 1;
-			chart1Col2Start = chart1Col2Start + 1;
-			chart1Col3Start = chart1Col3Start + 1;
-
+			// Increment the start for each cell
+			chart1Col1Start = chart1Col1Start + rangeStep;
+			chart1Col2Start = chart1Col2Start + rangeStep;
+			chart1Col3Start = chart1Col3Start + rangeStep;
+			// Push each row to the array
 			chart1Arr.push(chart1Row);
+			// Push each range so we don't query it again
 			chart1RangeDone.push(chart1Col1range);
 			chart1RangeDone.push(chart1Col2range);
 			chart1RangeDone.push(chart1Col3range);
 		}
 
-		if (!chart2RangeDone.includes(range)) {
+		// Don't continue if the array includes the maximum range
+		if (!chart2RangeDone.includes(maxRange)) {
+			// Push all the information to the row/cells
 			chart2Row.push(chart2Col1range);
 			chart2Row.push(chart2Col1clicks);
 			chart2Row.push(chart2Col2range);
 			chart2Row.push(chart2Col2clicks);
 
-			chart2Col1Start = chart2Col1Start + 1;
-			chart2Col2Start = chart2Col2Start + 1;
-
+			// Increment the start for each cell
+			chart2Col1Start = chart2Col1Start + rangeStep;
+			chart2Col2Start = chart2Col2Start + rangeStep;
+			// Push each row to the array
 			chart2Arr.push(chart2Row);
+			// Push all the information to the row/cells
 			chart2RangeDone.push(chart2Col1range);
 			chart2RangeDone.push(chart2Col2range);
 		}
 	});
 
+	// Build the rows and append them to the table
 	chart1Arr.forEach((e) => {
 		chart1Row = makeTableRow("", e[0], e[1], e[2], e[3], e[4], e[5]);
 		chart1Table.appendChild(chart1Row);
 	});
+	// Append the footer row
 	chart1Table.appendChild(chart1FooterRow);
+	// Display the table
 	outputChart1.appendChild(chart1Table);
 
+	// Build the rows and append them to the table
 	chart2Arr.forEach((e) => {
 		chart2Row = makeTableRow("", e[0], e[1], e[2], e[3]);
 		chart2Table.appendChild(chart2Row);
 	});
+	// Append the footer row
 	chart2Table.appendChild(chart2FooterRow);
+	// Display the table
 	outputChart2.appendChild(chart2Table);
 
+	// Display the raw data
 	outputBlock.appendChild(simpleBlockTable);
 } // function fillResultsTable(traj)
 
@@ -555,7 +661,7 @@ function goTrajTable() {
 		shotin.elevation = zeroElAz.elevation;
 	}
 
-	var traj = dasolver.calculateTrajectory(atmo, shotin, windo, UC.from(document.getElementById("tgtRangeMax").value, "yard"), UC.from(document.getElementById("tgtRangeStep").value, "yard"));
+	var traj = dasolver.calculateTrajectory(atmo, shotin, windo, UC.from(document.getElementById("tgtRangeMax").value, "yard"), 3);
 
 	fillResultsTable(traj, shotin.elevation, dasolver.v0.getRealV0(atmo, dasolver.bullet), minDistance);
 } // function goTrajTable()
