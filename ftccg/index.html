@@ -210,6 +210,13 @@
                 <p><a onclick="window.print();" href="#!">Printing the page</a> will only print the charts.</p>
                 <div class="group">
                     <div class="inner">
+                        <label for="blankTemplate" id="s-blankTemplate"><input type="checkbox" id="blankTemplate"> Give me a blank template!</label>
+                    </div>
+                    <p>If you prefer doing your own click chart but still want a handy template then hit this checkbox and it'll clear most of the info from the charts except rifle, scope and zero distance.</p>
+                </div>
+
+                <div class="group">
+                    <div class="inner">
                         <label for="gearSightHeight" id="s-sightheight">Sight height, mm</label>
                         <input type="number" id="gearSightHeight" min="0" max="100" value="55" step="1">
                     </div>
@@ -494,7 +501,7 @@
     <script src="./assets/js/service.js"></script>
     <script src="./assets/js/units.js"></script>
     <script src="./assets/js/vector.js"></script>
-    <script src="./assets/js/ebalengine.js"></script>
-    <script src="./assets/js/ebalka.js" defer=""></script>
+    <script src="./assets/js/engine.js"></script>
+    <script src="./assets/js/index.js" defer=""></script>
 </body>
 </html>

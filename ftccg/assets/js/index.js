@@ -212,6 +212,8 @@ var G1ChairGun = {
 
 
 function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
+	// Get blank checkbox
+	var blankTable = document.getElementById("blankTemplate").checked;
 	// Set click unit
 	var clickUnit = "moa"
 	// Get click values in radians
@@ -244,7 +246,8 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 	// Build the chart header from the rifle and scope
 	var chartHeaderVal = rifleName + " / " + scopeName;
 	// Build the chart footer from the zero distance, BC and drag profile
-	var chartFooterVal = "Zero: " + zeroDistance + " yards / BC: " + bcValue + " / Drag Profile: " + dragProfile;
+	// unless blank checkbox is checked in which case just display zero distance
+	var chartFooterVal = blankTable ? "Zero: " + zeroDistance + " yards" : "Zero: " + zeroDistance + " yards / BC: " + bcValue + " / Drag Profile: " + dragProfile;
 
 	// Get output areas
 	var outputBlock = document.getElementById("outputBlock");
@@ -480,8 +483,8 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 			simpleBlockTable.appendChild(simpleblockRow);
 			// Push the range to the range array
 			rangeArr.push(Range);
-			// Push either the turret divisions or the clicks to the range array
-			chartTurret ? rangeArr.push(turretY) : rangeArr.push(clicksY);
+			// Push either the turret divisions or the clicks to the range array unless the blank checkbox is checked
+			blankTable ? rangeArr.push('') : chartTurret ? rangeArr.push(turretY) : rangeArr.push(clicksY);
 			// Push the range array to the data array used for building charts
 			dataArr.push(rangeArr);
 		}
@@ -605,7 +608,7 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 	outputChart2.appendChild(chart2Table);
 
 	// Display the raw data
-	outputBlock.appendChild(simpleBlockTable);
+	!blankTable ? outputBlock.appendChild(simpleBlockTable) : null;
 } // function fillResultsTable(traj)
 
 function initGear() {
