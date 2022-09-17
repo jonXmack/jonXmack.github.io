@@ -210,40 +210,69 @@ var G1ChairGun = {
 	],
 };
 
+// Set a couple of empty variables to populate
+var clickUnit;
+var clickValue;
+// Get ClickV and ClickH elements
+var clickYEl = document.getElementById("gearClickV");
+var clickXEl = document.getElementById("gearClickH");
+// Set some values for the clicks
+var moaClickValue = '0.125'
+var mradClickValue = '0.05'
+
+// Function to set the X and Y click values to defaults
+function setTurretClickValue(value) {
+	clickYEl.setAttribute('step', value);
+	clickYEl.value = value;
+	clickXEl.setAttribute('step', value);
+	clickXEl.value = value;
+}
+
+function setTurretLabel(unit) {
+	var clickLabel = document.getElementById('s-clickvalue')
+	var clickCaption = document.getElementById('s-clickvaluecaption');
+	if (unit == "moa") {
+		clickLabel.innerHTML = `Click value (${unit.toUpperCase()}):`;
+		clickCaption.innerHTML = `Value in ${unit.toUpperCase()} of 1 turret click. 1/8 is 0.125, 1/4 is 0.25`;
+	} else {
+		clickLabel.innerHTML = `Click value (${clickUnit.toUpperCase()}):`;
+		clickCaption.innerHTML = `Value in ${clickUnit.toUpperCase()} of 1 turret click.`;
+	}
+}
+
+window.addEventListener('load', function(){
+	// Check to see which turret type it is
+	if (localStorage.getItem('turretMoa')) {
+		if (localStorage.getItem('turretMoa') === "true") {
+			clickUnit = 'moa';
+			setTurretClickValue(moaClickValue);
+		} else {
+			clickUnit = 'mrad';
+			setTurretClickValue(mradClickValue);
+		}
+		setTurretLabel(clickUnit);
+	}
+});
+
+// Check if MOA or MRAD and update the text
+document.querySelectorAll("#turretMoa, #turretMrad").forEach(el => {
+	el.addEventListener('click', function(e){
+		console.log(e.target.id);
+		if (e.target.id === 'turretMoa') {
+			clickUnit = "moa"
+			clickValue = moaClickValue
+		} else {
+			clickUnit = "mrad"
+			clickValue = mradClickValue
+		}
+		setTurretLabel(clickUnit);
+		setTurretClickValue(clickValue);
+	});
+});
 
 function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 	// Get blank checkbox
 	var blankTable = document.getElementById("blankTemplate").checked;
-	// Check if MOA or MRAD
-	var turretMoaChecked = document.querySelector("#turretMoa").checked;
-	var turretMradChecked = document.querySelector("#turretMrad").checked;
-
-	// Set Clickunit
-	var clickUnit
-	// Get ClickV and ClickH elements
-	var clickYEl = document.getElementById("gearClickV");
-	var clickXEl = document.getElementById("gearClickH");
-	// Change click unit depending on moa/mrad
-	if (turretMoaChecked === true) {
-		clickUnit = "moa"
-		clickValue = "0.125"
-		clickYEl.setAttribute('step', clickValue);
-		clickYEl.value = clickValue;
-		clickXEl.setAttribute('step', clickValue);
-		clickXEl.value = clickValue;
-		document.getElementById('s-clickvaluecaption').innerHTML = `Value in ${clickUnit.toUpperCase()} of 1 turret click. 1/8 is 0.125, 1/4 is 0.25`;
-	} else if (turretMradChecked === true) {
-		clickUnit = "mrad"
-		clickValue = "0.05"
-		clickYEl.setAttribute('step', clickValue);
-		clickYEl.value = clickValue;
-		clickXEl.setAttribute('step', clickValue);
-		clickXEl.value = clickValue;
-		document.getElementById('s-clickvaluecaption').innerHTML = `Value in ${clickUnit.toUpperCase()} of 1 turret click.`;
-	}
-	document.getElementById('s-clickvalue').innerHTML = `Click value (${clickUnit.toUpperCase()}):`;
-
-	// Set click unit
 	// Get click values in radians
 	var clickYValue = clickYEl.value;
 	var clickXValue = clickXEl.value;
@@ -253,6 +282,9 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 
 	// Convert radians to fractional value
 	var clickInteger = 1 / clickYValue;
+	// From what I can tell 0.05 mrad scopes generally have 100 clicks split into 10 divisions of 10
+	// This sets the clickInteger to 10 if that is the case else it assume 5 divisions of 20 which isn't common
+	// otherwise it just leaves it alone
 	clickInteger = clickInteger === 20 ? 10 : clickInteger
 	// Get wind speed
 	var windSpeed = document.getElementById("tgtWindSpeed").value;
