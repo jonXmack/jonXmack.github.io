@@ -214,17 +214,46 @@ var G1ChairGun = {
 function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 	// Get blank checkbox
 	var blankTable = document.getElementById("blankTemplate").checked;
+	// Check if MOA or MRAD
+	var turretMoaChecked = document.querySelector("#turretMoa").checked;
+	var turretMradChecked = document.querySelector("#turretMrad").checked;
+
+	// Set Clickunit
+	var clickUnit
+	// Get ClickV and ClickH elements
+	var clickYEl = document.getElementById("gearClickV");
+	var clickXEl = document.getElementById("gearClickH");
+	// Change click unit depending on moa/mrad
+	if (turretMoaChecked === true) {
+		clickUnit = "moa"
+		clickValue = "0.125"
+		clickYEl.setAttribute('step', clickValue);
+		clickYEl.value = clickValue;
+		clickXEl.setAttribute('step', clickValue);
+		clickXEl.value = clickValue;
+		document.getElementById('s-clickvaluecaption').innerHTML = `Value in ${clickUnit.toUpperCase()} of 1 turret click. 1/8 is 0.125, 1/4 is 0.25`;
+	} else if (turretMradChecked === true) {
+		clickUnit = "mrad"
+		clickValue = "0.05"
+		clickYEl.setAttribute('step', clickValue);
+		clickYEl.value = clickValue;
+		clickXEl.setAttribute('step', clickValue);
+		clickXEl.value = clickValue;
+		document.getElementById('s-clickvaluecaption').innerHTML = `Value in ${clickUnit.toUpperCase()} of 1 turret click.`;
+	}
+	document.getElementById('s-clickvalue').innerHTML = `Click value (${clickUnit.toUpperCase()}):`;
+
 	// Set click unit
-	var clickUnit = "moa"
 	// Get click values in radians
-	var clickYValue = document.getElementById("gearClickV").value;
-	var clickXValue = document.getElementById("gearClickH").value;
+	var clickYValue = clickYEl.value;
+	var clickXValue = clickXEl.value;
 	// Convert radians to clickUnit
-	var clickY = UC.from(clickYValue, "moa");
-	var clickX = UC.from(clickXValue, "moa");
+	var clickY = UC.from(clickYValue, clickUnit);
+	var clickX = UC.from(clickXValue, clickUnit);
 
 	// Convert radians to fractional value
 	var clickInteger = 1 / clickYValue;
+	clickInteger = clickInteger === 20 ? 10 : clickInteger
 	// Get wind speed
 	var windSpeed = document.getElementById("tgtWindSpeed").value;
 	// Get wind direction
@@ -697,6 +726,24 @@ function saveElementData(el) {
 	// get element ID and value
 	var elId = el.getAttribute('id');
 	var elVal = el.value;
+	if (el.type === 'radio') {
+		if (el.value === 'moa') {
+			elVal = true;
+			localStorage.setItem('turretMrad', false);
+		}
+		if (el.value === 'mrad') {
+			elVal = true;
+			localStorage.setItem('turretMoa', false);
+		}
+		if (el.value === 'turret') {
+			elVal = true;
+			localStorage.setItem('chartClicks', false);
+		}
+		if (el.value === 'clicks') {
+			elVal = true;
+			localStorage.setItem('chartTurret', false);
+		}
+	}
 	// create localStorage item
 	localStorage.setItem(elId, elVal);
 }
@@ -710,7 +757,28 @@ function setElementData() {
 		// find the element
 		var el = document.querySelector('#' + elId);
 		// if it exists set the value
-		el ? el.value = elVal : null;
+		if (el) {
+			if (el.type === 'radio') {
+				if (elId === 'turretMoa' && elVal === 'true') {
+					el.checked = true;
+					document.getElementById('turretMrad').removeAttribute('checked');
+				}
+				if (elId === 'turretMrad' && elVal == 'true') {
+					el.checked = true;
+					document.getElementById('turretMoa').removeAttribute('checked');
+				}
+				if (elId === 'chartClicks' && elVal === 'true') {
+					el.checked = true;
+					document.getElementById('chartClicks').removeAttribute('checked');
+				}
+				if (elId === 'chartTurret' && elVal === 'true') {
+					el.checked = true;
+					document.getElementById('chartTurret').removeAttribute('checked');
+				}
+			} else {
+				el.value = elVal;
+			}
+		}
 	});
 }
 

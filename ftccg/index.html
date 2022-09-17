@@ -231,11 +231,18 @@
                 </div>
                 <div class="group">
                     <div class="inner">
+                        <label for="turretMoa"><input type="radio" name="turretClickSetting" id="turretMoa" value="moa" checked>MOA</label>
+                        <label for="turretMrad"><input type="radio" name="turretClickSetting" id="turretMrad" value="mrad">MRAD</label>
+                    </div>
+                    <p>Lets you select between turret divions (such as 4+4) or just total clicks</p>
+                </div>
+                <div class="group">
+                    <div class="inner">
                         <label for="gearClickV" id="s-clickvalue">Click value (MOA):</label>
                         <input type="number" id="gearClickV" min="0" max="1" value="0.125" step="0.125">
                         <input type="hidden" id="gearClickH" min="0" max="1" value="0.125" step="0.125">
                     </div>
-                    <p>Value in MOA of 1 turret click. 1/8 is 0.125, 1/4 is 0.25</p>
+                    <p id="s-clickvaluecaption">Value in MOA of 1 turret click. 1/8 is 0.125, 1/4 is 0.25</p>
                 </div>
                 <div class="group">
                     <div class="inner">
