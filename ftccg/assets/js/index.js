@@ -657,6 +657,10 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 	chart1Table.appendChild(chart1FooterRow);
 	// Display the table
 	outputChart1.appendChild(chart1Table);
+	outputChart1.classList.remove(`outputTable--1`)
+	outputChart1.classList.remove(`outputTable--3`)
+	outputChart1.classList.remove(`outputTable--5`)
+	outputChart1.classList.add(`outputTable--${rangeStep}`)
 
 	// Build the rows and append them to the table
 	chart2Arr.forEach((e) => {
@@ -667,6 +671,10 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 	chart2Table.appendChild(chart2FooterRow);
 	// Display the table
 	outputChart2.appendChild(chart2Table);
+	outputChart2.classList.remove(`outputTable--1`)
+	outputChart2.classList.remove(`outputTable--3`)
+	outputChart2.classList.remove(`outputTable--5`)
+	outputChart2.classList.add(`outputTable--${rangeStep}`)
 
 	// Display the raw data
 	!blankTable ? outputBlock.appendChild(simpleBlockTable) : null;
