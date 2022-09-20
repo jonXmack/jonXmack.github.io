@@ -303,13 +303,18 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 	var bcValue = document.getElementById("gearbc").value;
 	// Get drag profile
 	var dragProfile = document.getElementById("tgtDragProfile").value;
+	// Get velocity
+	var Velocity = document.getElementById("gearv0").value;
 
 	// Build the chart header from the rifle and scope
 	var chartHeaderVal = rifleName + " / " + scopeName;
 	// Build the chart footer from the zero distance, BC and drag profile
 	// unless blank checkbox is checked in which case just display zero distance
-	var chartFooterVal = blankTable ? "Zero: " + zeroDistance + " yards" : "Zero: " + zeroDistance + " yards / BC: " + bcValue + " / Drag Profile: " + dragProfile;
-
+	var chartFooterZeroBcDrag = blankTable ? "Zero: " + zeroDistance + " yards" : "Zero: " + zeroDistance + " yards / BC: " + bcValue + " / Drag Profile: " + dragProfile;
+	var chartFooterZeroDrag = blankTable ? "Zero: " + zeroDistance + " yards" : "Zero: " + zeroDistance + " yards / Drag Profile: " + dragProfile;
+	var chartFooterZeroBcVelocity = blankTable ? "Zero: " + zeroDistance + " yards" : "Zero: " + zeroDistance + " yards / BC: " + bcValue + " / Velocity: " + Velocity + ' fps';
+	var chartFooterZeroVelocity = blankTable ? "Zero: " + zeroDistance + " yards" : "Zero: " + zeroDistance + " yards / Velocity: " + Velocity + ' fps';
+	
 	// Get output areas
 	var outputBlock = document.getElementById("outputBlock");
 	var outputChart1 = document.getElementById("outputChart1");
@@ -359,7 +364,7 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 	chart1FooterCell = document.createElement("td");
 	chart1FooterCell.setAttribute("colspan", "6");
 	// chart1FooterCell.setAttribute("class", "outputTableTd");
-	chart1FooterCell.innerHTML = chartFooterVal;
+	chart1FooterCell.innerHTML = chartFooterZeroBcVelocity;
 	chart1FooterRow.appendChild(chart1FooterCell);
 
 	chart2Table = document.createElement("table");
@@ -377,7 +382,7 @@ function fillResultsTable(traj, zeroElevation, realv0, minDistance) {
 	chart2FooterCell = document.createElement("td");
 	chart2FooterCell.setAttribute("colspan", "4");
 	chart2FooterCell.setAttribute("class", "outputTableTd");
-	chart2FooterCell.innerHTML = chartFooterVal;
+	chart2FooterCell.innerHTML = chartFooterZeroBcVelocity;
 	chart2FooterRow.appendChild(chart2FooterCell);
 
 	blockCell = document.createElement("th");
