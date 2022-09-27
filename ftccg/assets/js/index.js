@@ -211,7 +211,7 @@ var G1ChairGun = {
 };
 
 // Set a couple of empty variables to populate
-var clickUnit;
+var clickUnit = 'moa';
 var clickValue;
 // Get ClickV and ClickH elements
 var clickYEl = document.getElementById("gearClickV");
