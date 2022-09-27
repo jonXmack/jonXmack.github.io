@@ -257,7 +257,6 @@ window.addEventListener('load', function(){
 // Check if MOA or MRAD and update the text
 document.querySelectorAll("#turretMoa, #turretMrad").forEach(el => {
 	el.addEventListener('click', function(e){
-		console.log(e.target.id);
 		if (e.target.id === 'turretMoa') {
 			clickUnit = "moa"
 			clickValue = moaClickValue
@@ -772,19 +771,19 @@ function saveElementData(el) {
 	var elId = el.getAttribute('id');
 	var elVal = el.value;
 	if (el.type === 'radio') {
-		if (el.value === 'moa') {
+		if (el.value === 'moa' && el.checked) {
 			elVal = true;
 			localStorage.setItem('turretMrad', false);
 		}
-		if (el.value === 'mrad') {
+		if (el.value === 'mrad' && el.checked) {
 			elVal = true;
 			localStorage.setItem('turretMoa', false);
 		}
-		if (el.value === 'turret') {
+		if (el.value === 'turret' && el.checked) {
 			elVal = true;
 			localStorage.setItem('chartClicks', false);
 		}
-		if (el.value === 'clicks') {
+		if (el.value === 'clicks' && el.checked) {
 			elVal = true;
 			localStorage.setItem('chartTurret', false);
 		}
