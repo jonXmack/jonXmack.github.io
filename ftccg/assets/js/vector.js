@@ -28,79 +28,79 @@ invisible rays of gratitude and happiness almost every day.
 // vector object and logic
 
 function Vector(x, y, z) {
-	if (!x) {
-		this.x = 0;
-	} else {
-		this.x = x;
-	}
+  if (!x) {
+    this.x = 0;
+  } else {
+    this.x = x;
+  }
 
-	if (!y) {
-		this.y = 0;
-	} else {
-		this.y = y;
-	}
+  if (!y) {
+    this.y = 0;
+  } else {
+    this.y = y;
+  }
 
-	if (!z) {
-		this.z = 0;
-	} else {
-		this.z = z;
-	}
+  if (!z) {
+    this.z = 0;
+  } else {
+    this.z = z;
+  }
 }
 
 function VectorLogic() {
-	this.dotX = function (v1, v2) {
-		return v1.x * v2.x;
-	};
-	this.dotY = function (v1, v2) {
-		return v1.y * v2.y;
-	};
-	this.dotZ = function (v1, v2) {
-		return v1.z * v2.z;
-	};
-	this.dot = function (v1, v2) {
-		return dotX(v1, v2) + dotY(v1, v2) + dotZ(v1, v2);
-	};
+  this.dotX = function (v1, v2) {
+    return v1.x * v2.x;
+  };
+  this.dotY = function (v1, v2) {
+    return v1.y * v2.y;
+  };
+  this.dotZ = function (v1, v2) {
+    return v1.z * v2.z;
+  };
+  this.dot = function (v1, v2) {
+    return dotX(v1, v2) + dotY(v1, v2) + dotZ(v1, v2);
+  };
 
-	this.add = function (v1, v2) {
-		var result = new Vector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
-		return result;
-	};
+  this.add = function (v1, v2) {
+    var result = new Vector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
+    return result;
+  };
 
-	this.subtract = function (v1, v2) {
-		var result = new Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
-		return result;
-	};
+  this.subtract = function (v1, v2) {
+    var result = new Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
+    return result;
+  };
 
-	this.multiply = function (scalar, vector) {
-		var result = new Vector(vector.x * scalar, vector.y * scalar, vector.z * scalar);
-		return result;
-	};
+  this.multiply = function (scalar, vector) {
+    var result = new Vector(vector.x * scalar, vector.y * scalar, vector.z * scalar);
+    return result;
+  };
 
-	this.reverse = function (vector) {
-		var result = new Vector(-vector.x, -vector.y, -vector.z);
-		return result;
-	};
+  this.reverse = function (vector) {
+    var result = new Vector(-vector.x, -vector.y, -vector.z);
+    return result;
+  };
 
-	this.modulus = function (vector) {
-		return this.dot(vector, vector);
-	};
+  this.modulus = function (vector) {
+    return this.dot(vector, vector);
+  };
 
-	this.vlength = function (vector) {
-		return Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
-	};
+  this.vlength = function (vector) {
+    return Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+  };
 
-	this.distance = function (v1, v2) {
-		return this.vlength(this.subtract(v1, v2));
-	};
+  this.distance = function (v1, v2) {
+    return this.vlength(this.subtract(v1, v2));
+  };
 
-	this.normalize = function (vector) {
-		var len = this.vlength(vector);
-		if (len > 0) {
-			return this.multiply(1.0 / len, vector);
-		} else {
-			return new Vector();
-		}
-	};
+  this.normalize = function (vector) {
+    var len = this.vlength(vector);
+    if (len > 0) {
+      return this.multiply(1.0 / len, vector);
+    } else {
+      return new Vector();
+    }
+  };
 } // vectorLogic object
 
 // global object init
