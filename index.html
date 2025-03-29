@@ -5,13 +5,335 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>jonXmack.github.io</title>
-  <link rel="stylesheet" href="assets/css/normalize.css">
+  <title>Jon MacKinnon - Front End Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/reset.css">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
-  <p><a href="/ftccg">Field Target Click Chart Generator</a></p>
+  <!--
+    <header>
+      <h1>Jon MacKinnon - Front End Developer</h1>
+      <ul>
+        <li>jonmackinnon@gmail.com</li>
+        <li>07805 408686</li>
+        <li>Weston-super-Mare, UK</li>
+      </ul>
+    </header>
+  -->
+
+  <main>
+    <section class="case-study">
+      <div class="case-study__gallery">
+        <img src="https://placehold.co/1440x2880" alt="Case Study">
+        <img src="https://placehold.co/1440x2880" alt="Case Study">
+        <img src="https://placehold.co/1440x2880" alt="Case Study">
+      </div>
+      <div class="case-study__grid">
+        <div class="case-study__col case-study__col--content case-study__col--snowdonia">
+          <div class="case-study__header">
+            <h3>Snowdonia Cheese - Project Lead Developer</h3>
+            <span class="pill pill--snowdonia">Feb 2025</span>
+          </div>
+          <p>Led the project from discovery through to launch. Included scoping of the entire site and development
+            process as well as a full migration of historical data from
+            WooCommerce to Shopify. Led discovery, scoping and development guidelines of a React based "Hamper Builder",
+            allowing customers to build their own custom hamper.</p>
+
+          <ul>
+            <li>Developed custom theme</li>
+            <li>Led discovery, scoping and development guidelines for custom Hamper Builder</li>
+            <li>Integrated custom Date Picker app to allow nominated delivery date selection for orders</li>
+            <li>Integrated with third party apps: Yotpo, Klaviyo, Stofind</li>
+            <li>Created a custom node.js script to allow migration of legacy data</li>
+            <li>Migrated over 220,000 orders and 300,000 customers</li>
+          </ul>
+        </div>
+
+        <div class="case-study__col case-study__col--content case-study__col--green-people">
+          <div class="case-study__header">
+            <h3>Green People - Project Lead Developer</h3>
+            <span class="pill pill--green-people">Feb 2025</span>
+          </div>
+          <p>Inherited the project prior to inital client handover. Oversaw user acceptance testing, final delivery
+            and launch.
+          </p>
+
+          <ul>
+            <li>Developed custom theme</li>
+            <li>Updated existing Algolia installation to align with updated site designs</li>
+            <li>Integrated with third party apps: Nosto, Skio, Videowise, Klaviyo</li>
+          </ul>
+
+          <div class="case-study__header">
+            <h3>Green People - Search and Merch Migration</h3>
+            <span class="pill pill--green-people">Feb 2025</span>
+          </div>
+          <p>Scoped and personally delivered a migration from Algolia to Advanced Commerce.</p>
+
+          <ul>
+            <li>Made improvements to quick-search functionality</li>
+            <li>Migrated PLP from Algolia</li>
+            <li>Implemented custom search results page</li>
+          </ul>
+        </div>
+      </div>
+      <div class="case-study__gallery">
+        <img src="https://placehold.co/1440x2880" alt="Case Study">
+        <img src="https://placehold.co/1440x2880" alt="Case Study">
+        <img src="https://placehold.co/1440x2880" alt="Case Study">
+      </div>
+    </section>
+
+
+    <!--
+  <section class="case-study">
+    <div class="case-study__col case-study__col--image">
+      <img src="https://placehold.co/1440x2880" alt="Case Study">
+    </div>
+    <div class="case-study__col case-study__col--content">
+      <h3>Green People</h3>
+      <span class="pill pill--green-people">Feb 2024</span>
+      <details>
+        <summary>Site Build</summary>
+        <ul>
+          <li>Co-lead project</li>
+          <li>Co-lead project...</li>
+          <li>Co-lead project...</li>
+          <li>Co-lead project...</li>
+        </ul>
+      </details>
+      <span class="pill pill--green-people">Feb 2025</span>
+      <details>
+        <summary>PLP Search and Merch Replatform</summary>
+        <ul>
+          <li>Co-lead project</li>
+          <li>Co-lead project...</li>
+          <li>Co-lead project...</li>
+          <li>Co-lead project...</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <section class="case-study">
+    <div class="case-study__col case-study__col--image">
+      <img src="https://placehold.co/1440x2880" alt="Case Study">
+    </div>
+    <div class="case-study__col case-study__col--content">
+      <h3>WatchHouse</h3>
+      <span class="pill pill--watchhouse">Sep 2023</span>
+      <details>
+        <summary>Site Build</summary>
+        <ul>
+          <li>Co-lead project</li>
+          <li>Co-lead project...</li>
+          <li>Co-lead project...</li>
+          <li>Co-lead project...</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <section class="case-study">
+    <div class="case-study__col case-study__col--image">
+      <img src="https://placehold.co/1440x2880" alt="Case Study">
+    </div>
+    <div class="case-study__col case-study__col--content">
+      <h3>Rixo</h3>
+      <span class="pill pill--rixo">Jan 2023</span>
+      <details>
+        <summary>Site Build</summary>
+        <ul>
+          <li>Co-lead project</li>
+          <li>Co-lead project...</li>
+          <li>Co-lead project...</li>
+          <li>Co-lead project...</li>
+        </ul>
+      </details>
+      <span class="pill pill--rixo">July 2024</span>
+      <details>
+        <summary>PLP Search and Merch Replatform</summary>
+        <ul>
+          <li>Co-lead project</li>
+          <li>Co-lead project...</li>
+          <li>Co-lead project...</li>
+          <li>Co-lead project...</li>
+        </ul>
+      </details>
+      <span class="pill pill--rixo">Jan 2025</span>
+      <details>
+        <summary>PDP Rebuild</summary>
+        <ul>
+          <li>Co-lead project</li>
+          <li>Co-lead project...</li>
+          <li>Co-lead project...</li>
+          <li>Co-lead project...</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <aside>
+    <h2>Education</h2>
+    <p>BA (Hons) Graphic Design<br>
+      University of Wales, Newport<br>
+      2005-2008</p>
+
+    <h2>Technical Skill Set</h2>
+    <ul>
+      <li>HTML</li>
+      <li>CSS (SASS)</li>
+      <li>JavaScript/TypeScript</li>
+      <li>Shopify Liquid</li>
+      <li>Shopify Metaobjects/Metafields</li>
+      <li>React</li>
+      <li>Shopify CLI</li>
+      <li>GraphQL</li>
+      <li>Git</li>
+      <li>GitHub</li>
+      <li>Webpack</li>
+      <li>Figma</li>
+      <li>ClickUp</li>
+      <li>Jira</li>
+      <li>Slack</li>
+    </ul>
+
+    <h2>Certifications</h2>
+    <ul>
+      <li>Shopify Development Fundamentals</li>
+      <li>Shopify Liquid Storefronts for Theme Developers</li>
+      <li>Shopify Headless for Developers</li>
+      <li>Shopify Solution Planning Fundamentals</li>
+    </ul>
+
+    <h2>Other Interests</h2>
+    <ul>
+      <li>Cycling</li>
+      <li>Live music</li>
+      <li>Weightlifting</li>
+      <li>Photography</li>
+    </ul>
+  </aside>
+  <section>
+    <h2>Profile</h2>
+    <p>Adaptable Front End Developer with 15 years’ experience producing high quality
+      websites for clients across multiple sectors. I have spent the last 6 years
+      specialising in Shopify development and I am passionate about clean, efficient,
+      well-documented code. I consider myself to be an efficient worker with a
+      eagerness to learn and a willingness to go above and beyond.
+    </p>
+
+    <h2>Experience</h2>
+    <h3>Engineering Lead, Blubolt – Sept 2024 - Present</h3>
+    <ul>
+      <li>Providing technical guidance and paired programing to the development team to
+        establish delivery of quality work in line with coding standards
+      </li>
+      <li>
+        Liasing with the delivery lead and account managers to plan sprints ensuring
+        relevant tickets sit with the developer best suited
+      </li>
+      <li>
+        Researching potential optimisation strategies for the starter theme framework to
+        increase Core Web Vitals performance
+      </li>
+    </ul>
+
+    <h3>Tech Lead, Blubolt – Jan 2024 - August 2024</h3>
+    <ul>
+      <li>
+        Worked alongside Head of Development to write and implement coding standards
+        for SASS, Liquid, documentation and overall working process
+      </li>
+      <li>
+        Took ownership of the starter theme framework and re-wrote the entire codebase
+        in BEM methodology while also streamlining over 20 sections
+      </li>
+      <li>
+        Managed a team of 3 developers including monthly check ins and annual
+        performance reviews
+      </li>
+      <li>Attended weekly estimation calls for existing client retainer tickets</li>
+      <li>
+        Attended Shopify Editions in Toronto to meet - and question - the team behind the
+        platform
+      </li>
+    </ul>
+
+    <h3>Senior Front End Developer, Blubolt – Jan 2023 - December 2023</h3>
+    <ul>
+      <li>
+        Co-led and led projects for Rixo, WatchHouse and Green People, which involved
+        planning, estimating and delivering full site builds across multiple markets within
+        budget and to deadline
+
+      </li>
+      <li>
+        Developed a unique multi-theme approach for ZyroFisher allowing 9 brands with
+        individual brand guidelines to use a single codebase while retaining high levels of
+        customisability
+      </li>
+      <li>Implemented over 75 improvements to the starter theme framework</li>
+      <li>Mentored developers within the team</li>
+      <li>Performed peer code reviews</li>
+      <li>Migrated deployments from Circle CI to GitHub Actions</li>
+      <li>Performed Shopify 1.0 to 2.0 upgrades</li>
+      <li>Planned and executed upgrades to Shopify Checkout Extensibility</li>
+    </ul>
+
+    <h3>Front End Developer, Blubolt – June 2022 - December 2022</h3>
+    <ul>
+      <li>Worked alongside Project Leads/Managers to develop Shopify Plus websites</li>
+      <li>Updated existing Shopify Plus websites with new features and functionality</li>
+      <li>Began learning React and TypeScript</li>
+    </ul>
+
+    <h3>Senior Developer, MoreSoda, Bath – July 2016 - June 2021</h3>
+    <ul>
+      <li>
+        Worked alongside Project Managers to create websites using Shopify and Craft
+        CMS. From supplied designs, through development, and testing, to deployment.
+        Developed a streamlined, mobile-first SASS-based framework with a focus on
+        speed across devices and responsive flexibility, complete with usage
+        documentation.
+
+      </li>
+      <li>
+        Implemented migrations to Shopify from other e-commerce platforms, and from
+        other CMS platforms such as WordPress and ExpressionEngine to Craft CMS.
+        Took responsibility for updating legacy sites using older platforms and
+        technologies to modern CMS’ and build processes.
+      </li>
+      <li>
+        Ensured respectable site speeds using Google PageSpeed Insights and GTMetrix
+        for testing purposes, alongside BrowserStack for cross-browser testing.
+      </li>
+    </ul>
+
+    <h3>Front End Developer, Yadda – September 2015 - June 2016</h3>
+    <ul>
+      <li>Worked with WordPress to create, maintain, and update websites.</li>
+      <li>Used Docker to manage local development environments.</li>
+    </ul>
+
+    <h3>Front End Developer, MoreSoda – July 2009 - August 2015</h3>
+    <ul>
+      <li>Created HTML newsletters for Campaign Monitor and Mailchimp</li>
+      <li>Used ExpressionEngine to develop websites</li>
+      <li>Implemented git version control alongside other team members</li>
+    </ul>
+  </section>
+  -->
+
+  </main>
+  <footer>
+
+  </footer>
 </body>
 
 </html>
